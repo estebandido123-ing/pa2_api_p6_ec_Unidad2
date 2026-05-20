@@ -17,7 +17,7 @@ public class Main {
         @Override
         public int run(String... args) throws Exception {
 
-            System.err.println("Conexion a base de datos");
+            System.out.println("Conexion a base de datos");
 
             return 0;        
         }

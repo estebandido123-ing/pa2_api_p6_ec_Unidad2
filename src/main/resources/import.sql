@@ -4,3 +4,18 @@
 -- insert into myentity (id, field) values(2, 'field-2');
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
+INSERT INTO estudiante(
+    estu_id,
+    estu_nombre,
+    estu_apellido,
+    estu_genero,
+    estu_fechaNacimiento
+)
+VALUES(
+    nextval('seq_estudiante'),
+    'Esteban',
+    'Chachalo',
+    'M',
+    '2003-01-19'
+);
+
