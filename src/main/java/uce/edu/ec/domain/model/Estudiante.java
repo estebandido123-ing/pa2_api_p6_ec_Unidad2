@@ -17,7 +17,7 @@ public class Estudiante {
     @Id
     @SequenceGenerator(name = "seq_estudiante_generador", sequenceName = "seq_estudiante", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_estudiante_generador")
-    
+
     @Column(name = "estu_id")
     private Integer id;
 
@@ -32,6 +32,10 @@ public class Estudiante {
 
     @Column(name = "estu_genero")
     private String genero;
+
+    public Estudiante() {
+    }
+
 
     
     public Estudiante(Integer id, String nombre, String apellido, LocalDate fechaNacimiento, String genero) {
