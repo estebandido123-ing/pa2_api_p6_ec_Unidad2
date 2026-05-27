@@ -17,6 +17,9 @@ public class Profesor {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_profesor_generador")
     @Column(name = "prof_id")
     private Integer id;
+    
+    @Column(name = "prof_cedula", unique = true, nullable = false)
+    private String cedula;
 
     @Column(name = "prof_nombre")
     private String nombre;
@@ -30,57 +33,62 @@ public class Profesor {
     @Column(name = "prof_departamento")
     private String departamento;
 
-    // Constructor vacío obligatorio para Hibernate
     public Profesor() {
     }
 
-    // Constructor con parámetros
-    public Profesor(Integer id, String nombre, String apellido, String titulo, String departamento) {
+    public Profesor(Integer id, String cedula, String nombre, String apellido, String titulo, String departamento) {
         this.id = id;
+        this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.titulo = titulo;
         this.departamento = departamento;
     }
 
-    // Getters y Setters
-    public Integer getId() {
-        return id;
+    public Integer getId() { 
+        return id; 
     }
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setId(Integer id) { 
+        this.id = id; 
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getCedula() { 
+        return cedula; 
     }
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setCedula(String cedula) { 
+        this.cedula = cedula; 
     }
 
-    public String getDepartamento() {
-        return departamento;
+    public String getNombre() { 
+        return nombre; 
     }
-    public void setDepartamento(String departamento) {
-        this.departamento = departamento;
+    public void setNombre(String nombre) { 
+        this.nombre = nombre; 
     }
-    
+
+    public String getApellido() { 
+        return apellido; 
+    }
+    public void setApellido(String apellido) { 
+        this.apellido = apellido; 
+    }
+
+    public String getTitulo() { 
+        return titulo; 
+    }
+    public void setTitulo(String titulo) { 
+        this.titulo = titulo; 
+    }
+
+    public String getDepartamento() { 
+        return departamento; 
+    }
+    public void setDepartamento(String departamento) { 
+        this.departamento = departamento; 
+    }
+
     @Override
     public String toString() {
-        return "Profesor [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", titulo=" + titulo + ", departamento=" + departamento + "]";
+        return "Profesor [id=" + id + ", cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", titulo=" + titulo + ", departamento=" + departamento + "]";
     }
 }

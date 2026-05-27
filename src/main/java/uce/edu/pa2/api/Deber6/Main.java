@@ -1,5 +1,7 @@
 package uce.edu.pa2.api.Deber6;
 
+import java.util.List;
+
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
@@ -17,6 +19,7 @@ public class Main {
 
     public static class App implements QuarkusApplication {
         
+
         @Inject
         private ProfesorService profesorService;
         
@@ -34,31 +37,60 @@ public class Main {
             System.out.println(" INICIANDO PRUEBAS CRUD - PROFESOR");
             System.out.println("==========================================");
 
-            // 1. CREATE (Crear un nuevo profesor)
-            Profesor nuevoProfesor = new Profesor();
-            nuevoProfesor.setNombre("Marta");
-            nuevoProfesor.setApellido("Ruiz");
-            nuevoProfesor.setTitulo("Magister");
-            nuevoProfesor.setDepartamento("Matematicas");
-            profesorService.guardar(nuevoProfesor);
-            System.out.println("[CREATE] Nuevo profesor guardado en la BD.");
+            // ==========================================
+            // PRUEBAS PROFESOR
+            // ==========================================
+            Profesor profesor = new Profesor();
+            profesor.setCedula("1711223344");
+            profesor.setNombre("Carlos");
+            profesor.setApellido("Vera");
+            profesor.setTitulo("Magister en Sistemas");
+            profesor.setDepartamento("Ciencias de la Computacion");
+            System.out.println("Guardando: " + profesor.getNombre());
+            profesorService.guardar(profesor);
 
-            // 2. READ (Leer el profesor que se creó en el import.sql con ID 1)
-            Profesor profesorLeido = profesorService.buscarXId(1);
-            if (profesorLeido != null) {
-                System.out.println("[READ] Profesor encontrado: " + profesorLeido.getNombre() + " - " + profesorLeido.getTitulo());
-                
-                // 3. UPDATE (Subirle el título al profesor leído)
-                profesorLeido.setTitulo("Doctor (PhD)");
-                profesorService.actualizar(profesorLeido);
-                System.out.println("[UPDATE] Titulo del profesor actualizado a: " + profesorLeido.getTitulo());
-                
-                // 4. DELETE (Eliminar el profesor con ID 1)
-                profesorService.eliminar(1);
-                System.out.println("[DELETE] Profesor con ID 1 eliminado de la BD.");
-            } else {
-                System.out.println("[ERROR] No se encontro el profesor con ID 1.");
+
+            // --- LECTURAS Y LISTAS (PROFESOR) ---
+            System.out.println("\n--- LISTA DE TODOS LOS PROFESORES ---");
+            List<Profesor> todosLosProfesores = profesorService.seleccionarTodos();
+            for (Profesor prof : todosLosProfesores) {
+                System.out.println("ID: " + prof.getId() + " | Cedula: " + prof.getCedula() + " | Nombre: " + prof.getNombre() + " " + prof.getApellido());
             }
+            System.out.println("--------------------------------------\n");
+            
+            System.out.println("\n--- BUSCAR UN SOLO PROFESOR POR NOMBRE ---");
+            try {
+                Profesor profUnico = profesorService.selectByNombre("Carlos");
+                System.out.println(" Se encontro a: " + profUnico.getNombre() + " " + profUnico.getApellido());
+            } catch (Exception e) {
+                System.out.println(" Ocurrio un error al buscar por nombre.");
+            }
+
+            System.out.println("\n--- BUSCAR TODOS LOS PROFESORES POR NOMBRE (LISTA) ---");
+            List<Profesor> listaProfPorNombre = profesorService.seleccionarXNombre("Carlos");
+            if (listaProfPorNombre.isEmpty()) {
+                System.out.println("No se encontraron profesores con ese nombre.");
+            } else {
+                for (Profesor prof : listaProfPorNombre) {
+                    System.out.println("Encontrado: " + prof.getNombre() + " " + prof.getApellido());
+                }
+            }
+
+            System.out.println("\n--- BUSCAR PROFESOR POR CEDULA ---");
+            try {
+                Profesor profCedula = profesorService.seleccionarXCedula("1711223344");
+                System.out.println(" Profesor encontrado por cedula: " + profCedula.getNombre());
+                
+                // Aprovechamos que lo encontramos para probar la actualizacion
+                profCedula.setTitulo("Doctor (PhD)");
+                profesorService.actualizar(profCedula);
+                System.out.println(" Titulo actualizado a: " + profCedula.getTitulo());
+
+            } catch (Exception e) {
+                System.out.println(" No se encontro la cedula.");
+            }
+
+            
 
             System.out.println("==========================================");
             System.out.println(" PRUEBAS FINALIZADAS CON EXITO");
