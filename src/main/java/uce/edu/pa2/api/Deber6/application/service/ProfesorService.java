@@ -57,20 +57,4 @@ public class ProfesorService {
      public Long contar(){
         return this.profesorRepository.contar();
      }
-
-     public List<Profesor> buscarTodosNative(){
-        return this.profesorRepository.seleccionarTodosNative();
-     }
-     // 3 Native Queries Adicionales
-    public List<Profesor> buscarPorNombreNative(String nombre){
-        return this.profesorRepository.seleccionarPorNombreNative(nombre);
-    }
-
-    public List<Profesor> buscarPorDepartamentoNative(String departamento){
-        return this.profesorRepository.seleccionarPorDepartamentoNative(departamento);
-    }
-
-    public List<Profesor> buscarContratadosDespuesDeNative(LocalDate fecha){
-        return this.profesorRepository.seleccionarContratadosDespuesDeNative(fecha);
-    }
 }

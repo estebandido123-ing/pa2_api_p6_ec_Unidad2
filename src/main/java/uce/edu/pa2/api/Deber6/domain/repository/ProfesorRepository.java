@@ -11,7 +11,6 @@ public interface ProfesorRepository {
     public Profesor seleccionarPorId(Integer id);
     public void actualizar(Profesor profesor);
     public void eliminar(Integer id);
-    
     public List<Profesor> seleccionarTodos();
     public List<Profesor> seleccionarPorNombre(String nombre);
     public Profesor seleccionarPorCedula(String cedula);
@@ -21,10 +20,4 @@ public interface ProfesorRepository {
     public List<Profesor> seleccionarPorDepartamentoTyped(String departamento);
     public List<Profesor> seleccionarPorRangoFecha(LocalDate fechaInicio, LocalDate fechaFin);
     public Long contar();
-
-    // Native QUERY
-    public List<Profesor> seleccionarTodosNative();
-    public List<Profesor> seleccionarPorNombreNative(String nombre);
-    public List<Profesor> seleccionarPorDepartamentoNative(String departamento);
-    public List<Profesor> seleccionarContratadosDespuesDeNative(LocalDate fecha);
 }

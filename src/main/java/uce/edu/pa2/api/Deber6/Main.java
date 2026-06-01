@@ -32,12 +32,12 @@ public class Main {
             
             // Creacion de un nuevo Profesor
             Profesor profesor = new Profesor();
-            profesor.setCedula("0912345678");
-            profesor.setNombre("Carlos");
-            profesor.setApellido("Vera");
-            profesor.setFechaContratacion(LocalDate.of(2015, 5, 10));
-            profesor.setDepartamento("Sistemas");
-
+            profesor.setNombre("Raul");
+            profesor.setApellido("Arroyo");
+            profesor.setFechaContratacion(LocalDate.of(2010, 8, 15));
+            profesor.setDepartamento("Ciencias de la Computacion");
+            profesor.setCedula("17112321344"); // Asegurate de que esta cedula no choque con tu import.sql
+            
             // Guardar un nuevo profesor
             System.out.println("Guardando un nuevo Profesor...");
             profesorService.guardar(profesor);
@@ -49,7 +49,7 @@ public class Main {
             // Metodo Actualizar
             System.out.println("Actualizar los Datos por ID...");
             Profesor profesor2 = this.profesorService.buscarPorId(2);
-            if(profesor2 != null) {
+            if (profesor2 != null) {
                 profesor2.setNombre("Carlos");
                 profesor2.setApellido("Vera");
                 this.profesorService.actualizar(profesor2);
@@ -65,7 +65,7 @@ public class Main {
 
             // Seleccionar por nombre
             System.out.println("Seleccionar por nombre...");
-            List<Profesor> profesoresPorNombre = profesorService.buscarPorNombre("Carlos");
+            List<Profesor> profesoresPorNombre = profesorService.buscarPorNombre("Raul");
             for (Profesor p : profesoresPorNombre) {
                 System.out.println(p);
             }
@@ -74,31 +74,31 @@ public class Main {
             // seleccionar por cedula
             System.out.println("Seleccionar por cedula...");
             try {
-                Profesor profesorPorCedula = profesorService.buscarPorCedula("1711223344");
+                Profesor profesorPorCedula = profesorService.buscarPorCedula("17112321344");
                 System.out.println(profesorPorCedula);
             } catch (Exception e) {
-                System.out.println("No se encontro la cedula.");
+                System.out.println("No se encontro profesor con esa cedula.");
             }
-
+            
             // 1.2 NamedQuery--------------------------------------------------------------------------------------------------------------
             
-            // Seleccionar por departamento (Reemplazo de genero)
+            // Seleccionar por departamento
             System.out.println("Seleccionar por departamento...");
-            List<Profesor> profesoresPorDepartamento = profesorService.buscarPorDepartamento("Sistemas");
+            List<Profesor> profesoresPorDepartamento = profesorService.buscarPorDepartamento("Ciencias de la Computacion");
             for (Profesor p : profesoresPorDepartamento) {
                 System.out.println(p);
             }
 
             // Seleccionar por departamento usando NamedQuery Typed
-            System.out.println("Seleccionar por departamento usando NamedQuery...");  
-            List<Profesor> profesoresPorDeptoTyped = profesorService.buscarPorDepartamentoTyped("Sistemas");
-            for (Profesor p : profesoresPorDeptoTyped) {
+            System.out.println("Seleccionar por departamento usando NamedQuery Typed...");  
+            List<Profesor> profesPorDepartamentoTyped = profesorService.buscarPorDepartamentoTyped("Ciencias de la Computacion");
+            for (Profesor p : profesPorDepartamentoTyped) {
                 System.out.println(p);
             }
-
+            
             // Seleccionar por rango de fecha usando NamedQuery
             System.out.println("Seleccionar por rango de fecha usando NamedQuery...");  
-            List<Profesor> profesoresPorRangoFecha = profesorService.buscarPorRangoFecha(LocalDate.of(2010, 1, 1), LocalDate.of(2020, 12, 31));
+            List<Profesor> profesoresPorRangoFecha = profesorService.buscarPorRangoFecha(LocalDate.of(2005, 1, 1), LocalDate.of(2015, 12, 31));
             for (Profesor p : profesoresPorRangoFecha) {
                 System.out.println(p);
             }
@@ -108,33 +108,6 @@ public class Main {
             Long totalProfesores = profesorService.contar();
             System.out.println("Total de profesores: " + totalProfesores);
             
-            // Seleccionar todos los profesores usando Native Query
-            System.out.println("Seleccionar todos los profesores usando Native Query...");
-            List<Profesor> profesoresTodosNative = profesorService.buscarTodosNative();
-            for (Profesor p : profesoresTodosNative) {
-                System.out.println(p);
-            }
-
-            System.out.println("\n[NATIVE QUERY 1] Buscar profesor por nombre 'Carlos'...");
-            List<Profesor> profesNativeNombre = profesorService.buscarPorNombreNative("Carlos");
-            for (Profesor p : profesNativeNombre) {
-                System.out.println(p);
-            }
-
-            System.out.println("\n[NATIVE QUERY 2] Buscar profesores del departamento 'Sistemas'...");
-            List<Profesor> profesNativeDepto = profesorService.buscarPorDepartamentoNative("Sistemas");
-            for (Profesor p : profesNativeDepto) {
-                System.out.println(p);
-            }
-
-            System.out.println("\n[NATIVE QUERY 3] Buscar profesores contratados DESPUES del 1 de enero de 2010...");
-            List<Profesor> profesNativeFecha = profesorService.buscarContratadosDespuesDeNative(LocalDate.of(2010, 1, 1));
-            for (Profesor p : profesNativeFecha) {
-                System.out.println(p);
-            }
-
-
-
             Quarkus.waitForExit();
             return 0;        
         }

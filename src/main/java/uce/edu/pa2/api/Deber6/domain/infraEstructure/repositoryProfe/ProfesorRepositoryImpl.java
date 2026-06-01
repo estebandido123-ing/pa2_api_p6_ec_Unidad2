@@ -54,7 +54,7 @@ public class ProfesorRepositoryImpl implements ProfesorRepository {
     public Profesor seleccionarPorCedula(String cedula) {
         TypedQuery<Profesor> miQuery = this.em.createQuery("SELECT p FROM Profesor p WHERE p.cedula = :cedula1 ", Profesor.class);
         miQuery.setParameter("cedula1", cedula);
-        return miQuery.getResultList().getLast();
+        return miQuery.getResultList().getLast(); // Mantenemos tu uso de getLast()
     }
 
     // 1.2 NamedQuery
@@ -84,36 +84,5 @@ public class ProfesorRepositoryImpl implements ProfesorRepository {
     public Long contar() {
        TypedQuery<Long> contar = this.em.createNamedQuery("Profesor.contar", Long.class);
        return contar.getSingleResult();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Profesor> seleccionarTodosNative() {
-      Query query = this.em.createNativeQuery("SELECT * FROM profesor", Profesor.class);
-      return query.getResultList();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Profesor> seleccionarPorNombreNative(String nombre) {
-        Query query = this.em.createNativeQuery("SELECT * FROM profesor WHERE prof_nombre = ?1", Profesor.class);
-        query.setParameter(1, nombre);
-        return query.getResultList();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Profesor> seleccionarPorDepartamentoNative(String departamento) {
-        Query query = this.em.createNativeQuery("SELECT * FROM profesor WHERE prof_departamento = ?1", Profesor.class);
-        query.setParameter(1, departamento);
-        return query.getResultList();
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Profesor> seleccionarContratadosDespuesDeNative(LocalDate fecha) {
-        Query query = this.em.createNativeQuery("SELECT * FROM profesor WHERE prof_fecha_contratacion > ?1", Profesor.class);
-        query.setParameter(1, fecha);
-        return query.getResultList();
     }
 }

@@ -28,9 +28,6 @@ public class Profesor {
     @Column(name = "prof_id")    
     private Integer id;
 
-    @Column(name = "prof_cedula", unique = true, nullable = false)
-    private String cedula;
-
     @Column(name = "prof_nombre")
     private String nombre;
 
@@ -43,62 +40,50 @@ public class Profesor {
     @Column(name = "prof_departamento")
     private String departamento;
 
-    public Profesor() {
-    }
+    @Column(name = "prof_cedula", unique = true, nullable = false)
+    private String cedula;
 
-    public Profesor(Integer id, String cedula, String nombre, String apellido, LocalDate fechaContratacion, String departamento) {
+
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
         this.id = id;
-        this.cedula = cedula;
+    }
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    public String getApellido() {
+        return apellido;
+    }
+    public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+    public LocalDate getFechaContratacion() {
+        return fechaContratacion;
+    }
+    public void setFechaContratacion(LocalDate fechaContratacion) {
         this.fechaContratacion = fechaContratacion;
+    }
+    public String getDepartamento() {
+        return departamento;
+    }
+    public void setDepartamento(String departamento) {
         this.departamento = departamento;
     }
-
-    public Integer getId() { 
-        return id; 
+    public String getCedula() {
+        return cedula;
     }
-    public void setId(Integer id) { 
-        this.id = id; 
-    }
-
-    public String getCedula() { 
-        return cedula; 
-    }
-    public void setCedula(String cedula) { 
-        this.cedula = cedula; 
-    }
-
-    public String getNombre() { 
-        return nombre; 
-    }
-    public void setNombre(String nombre) { 
-        this.nombre = nombre; 
-    }
-
-    public String getApellido() { 
-        return apellido; 
-    }
-    public void setApellido(String apellido) { 
-        this.apellido = apellido; 
-    }
-
-    public LocalDate getFechaContratacion() { 
-        return fechaContratacion; 
-    }
-    public void setFechaContratacion(LocalDate fechaContratacion) { 
-        this.fechaContratacion = fechaContratacion; 
-    }
-
-    public String getDepartamento() { 
-        return departamento; 
-    }
-    public void setDepartamento(String departamento) { 
-        this.departamento = departamento; 
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
     }
 
     @Override
     public String toString() {
-        return "Profesor [id=" + id + ", cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaContratacion=" + fechaContratacion + ", departamento=" + departamento + "]";
+        return "Profesor [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaContratacion="
+                + fechaContratacion + ", departamento=" + departamento + ", cedula=" + cedula + "]";
     }
 }
