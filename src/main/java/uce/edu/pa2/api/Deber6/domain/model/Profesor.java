@@ -1,23 +1,33 @@
 package uce.edu.pa2.api.Deber6.domain.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "profesor")
+@NamedQueries({
+    @NamedQuery(name = "Profesor.buscarPorDepartamento", query = "SELECT p FROM Profesor p WHERE p.departamento = :departamento"),
+    @NamedQuery(name = "Profesor.buscarPorApellido", query = "SELECT p FROM Profesor p WHERE p.apellido = :apellido"),
+    @NamedQuery(name = "Profesor.buscarPorRangoFecha", query = "SELECT p FROM Profesor p WHERE p.fechaContratacion BETWEEN :fechaInicio AND :fechaFin"),
+    @NamedQuery(name = "Profesor.contar", query = "SELECT COUNT(p) FROM Profesor p")
+})
 public class Profesor {
 
-    @Id
     @SequenceGenerator(name = "seq_profesor_generador", sequenceName = "seq_profesor", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_profesor_generador")
-    @Column(name = "prof_id")
+    @Id
+    @Column(name = "prof_id")    
     private Integer id;
-    
+
     @Column(name = "prof_cedula", unique = true, nullable = false)
     private String cedula;
 
@@ -26,9 +36,9 @@ public class Profesor {
 
     @Column(name = "prof_apellido")
     private String apellido;
-
-    @Column(name = "prof_titulo")
-    private String titulo;
+    
+    @Column(name = "prof_fecha_contratacion")
+    private LocalDate fechaContratacion;
 
     @Column(name = "prof_departamento")
     private String departamento;
@@ -36,12 +46,12 @@ public class Profesor {
     public Profesor() {
     }
 
-    public Profesor(Integer id, String cedula, String nombre, String apellido, String titulo, String departamento) {
+    public Profesor(Integer id, String cedula, String nombre, String apellido, LocalDate fechaContratacion, String departamento) {
         this.id = id;
         this.cedula = cedula;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.titulo = titulo;
+        this.fechaContratacion = fechaContratacion;
         this.departamento = departamento;
     }
 
@@ -73,11 +83,11 @@ public class Profesor {
         this.apellido = apellido; 
     }
 
-    public String getTitulo() { 
-        return titulo; 
+    public LocalDate getFechaContratacion() { 
+        return fechaContratacion; 
     }
-    public void setTitulo(String titulo) { 
-        this.titulo = titulo; 
+    public void setFechaContratacion(LocalDate fechaContratacion) { 
+        this.fechaContratacion = fechaContratacion; 
     }
 
     public String getDepartamento() { 
@@ -89,6 +99,6 @@ public class Profesor {
 
     @Override
     public String toString() {
-        return "Profesor [id=" + id + ", cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", titulo=" + titulo + ", departamento=" + departamento + "]";
+        return "Profesor [id=" + id + ", cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", fechaContratacion=" + fechaContratacion + ", departamento=" + departamento + "]";
     }
 }

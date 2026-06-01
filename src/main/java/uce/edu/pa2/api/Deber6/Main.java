@@ -1,5 +1,6 @@
 package uce.edu.pa2.api.Deber6;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import io.quarkus.runtime.Quarkus;
@@ -27,78 +28,114 @@ public class Main {
         @Override
         public int run(String... args) throws Exception {
 
-            System.out.println("Conexion a base de datos");
-
-
-            //Estudiante estudiante =  new Estudiante(12, "Esteban", "Chachalo", 19012003, "masculino");
+            System.out.println("Conexion a la base de datos POSTGRES!");
             
-
-            System.out.println("\n==========================================");
-            System.out.println(" INICIANDO PRUEBAS CRUD - PROFESOR");
-            System.out.println("==========================================");
-
-            // ==========================================
-            // PRUEBAS PROFESOR
-            // ==========================================
+            // Creacion de un nuevo Profesor
             Profesor profesor = new Profesor();
-            profesor.setCedula("1711223344");
+            profesor.setCedula("0912345678");
             profesor.setNombre("Carlos");
             profesor.setApellido("Vera");
-            profesor.setTitulo("Magister en Sistemas");
-            profesor.setDepartamento("Ciencias de la Computacion");
-            System.out.println("Guardando: " + profesor.getNombre());
+            profesor.setFechaContratacion(LocalDate.of(2015, 5, 10));
+            profesor.setDepartamento("Sistemas");
+
+            // Guardar un nuevo profesor
+            System.out.println("Guardando un nuevo Profesor...");
             profesorService.guardar(profesor);
 
-
-            // --- LECTURAS Y LISTAS (PROFESOR) ---
-            System.out.println("\n--- LISTA DE TODOS LOS PROFESORES ---");
-            List<Profesor> todosLosProfesores = profesorService.seleccionarTodos();
-            for (Profesor prof : todosLosProfesores) {
-                System.out.println("ID: " + prof.getId() + " | Cedula: " + prof.getCedula() + " | Nombre: " + prof.getNombre() + " " + prof.getApellido());
-            }
-            System.out.println("--------------------------------------\n");
+            /* // Eliminar un profesor por ID
+            System.out.println("Eliminamos al Profesor por ID");
+            profesorService.eliminar(1);
             
-            System.out.println("\n--- BUSCAR UN SOLO PROFESOR POR NOMBRE ---");
+            // Metodo Actualizar
+            System.out.println("Actualizar los Datos por ID...");
+            Profesor profesor2 = this.profesorService.buscarPorId(2);
+            if(profesor2 != null) {
+                profesor2.setNombre("Carlos");
+                profesor2.setApellido("Vera");
+                this.profesorService.actualizar(profesor2);
+            }
+
+            // Buscar al Profesor por ID
+            System.out.println("Buscando Profesor por ID...");
+            System.out.println(profesorService.buscarPorId(2).toString());
+
+            // Seleccionar todos los profesores
+            System.out.println("Seleccionar todos los profesores...");
+            profesorService.buscarTodos().forEach(p -> System.out.println(p.toString()));
+
+            // Seleccionar por nombre
+            System.out.println("Seleccionar por nombre...");
+            List<Profesor> profesoresPorNombre = profesorService.buscarPorNombre("Carlos");
+            for (Profesor p : profesoresPorNombre) {
+                System.out.println(p);
+            }
+            */
+
+            // seleccionar por cedula
+            System.out.println("Seleccionar por cedula...");
             try {
-                Profesor profUnico = profesorService.selectByNombre("Carlos");
-                System.out.println(" Se encontro a: " + profUnico.getNombre() + " " + profUnico.getApellido());
+                Profesor profesorPorCedula = profesorService.buscarPorCedula("1711223344");
+                System.out.println(profesorPorCedula);
             } catch (Exception e) {
-                System.out.println(" Ocurrio un error al buscar por nombre.");
+                System.out.println("No se encontro la cedula.");
             }
 
-            System.out.println("\n--- BUSCAR TODOS LOS PROFESORES POR NOMBRE (LISTA) ---");
-            List<Profesor> listaProfPorNombre = profesorService.seleccionarXNombre("Carlos");
-            if (listaProfPorNombre.isEmpty()) {
-                System.out.println("No se encontraron profesores con ese nombre.");
-            } else {
-                for (Profesor prof : listaProfPorNombre) {
-                    System.out.println("Encontrado: " + prof.getNombre() + " " + prof.getApellido());
-                }
-            }
-
-            System.out.println("\n--- BUSCAR PROFESOR POR CEDULA ---");
-            try {
-                Profesor profCedula = profesorService.seleccionarXCedula("1711223344");
-                System.out.println(" Profesor encontrado por cedula: " + profCedula.getNombre());
-                
-                // Aprovechamos que lo encontramos para probar la actualizacion
-                profCedula.setTitulo("Doctor (PhD)");
-                profesorService.actualizar(profCedula);
-                System.out.println(" Titulo actualizado a: " + profCedula.getTitulo());
-
-            } catch (Exception e) {
-                System.out.println(" No se encontro la cedula.");
-            }
-
+            // 1.2 NamedQuery--------------------------------------------------------------------------------------------------------------
             
+            // Seleccionar por departamento (Reemplazo de genero)
+            System.out.println("Seleccionar por departamento...");
+            List<Profesor> profesoresPorDepartamento = profesorService.buscarPorDepartamento("Sistemas");
+            for (Profesor p : profesoresPorDepartamento) {
+                System.out.println(p);
+            }
 
-            System.out.println("==========================================");
-            System.out.println(" PRUEBAS FINALIZADAS CON EXITO");
-            System.out.println("==========================================\n");
+            // Seleccionar por departamento usando NamedQuery Typed
+            System.out.println("Seleccionar por departamento usando NamedQuery...");  
+            List<Profesor> profesoresPorDeptoTyped = profesorService.buscarPorDepartamentoTyped("Sistemas");
+            for (Profesor p : profesoresPorDeptoTyped) {
+                System.out.println(p);
+            }
+
+            // Seleccionar por rango de fecha usando NamedQuery
+            System.out.println("Seleccionar por rango de fecha usando NamedQuery...");  
+            List<Profesor> profesoresPorRangoFecha = profesorService.buscarPorRangoFecha(LocalDate.of(2010, 1, 1), LocalDate.of(2020, 12, 31));
+            for (Profesor p : profesoresPorRangoFecha) {
+                System.out.println(p);
+            }
+
+            // Contar el numero de profesores usando NamedQuery
+            System.out.println("Contar el numero de profesores usando NamedQuery...");
+            Long totalProfesores = profesorService.contar();
+            System.out.println("Total de profesores: " + totalProfesores);
+            
+            // Seleccionar todos los profesores usando Native Query
+            System.out.println("Seleccionar todos los profesores usando Native Query...");
+            List<Profesor> profesoresTodosNative = profesorService.buscarTodosNative();
+            for (Profesor p : profesoresTodosNative) {
+                System.out.println(p);
+            }
+
+            System.out.println("\n[NATIVE QUERY 1] Buscar profesor por nombre 'Carlos'...");
+            List<Profesor> profesNativeNombre = profesorService.buscarPorNombreNative("Carlos");
+            for (Profesor p : profesNativeNombre) {
+                System.out.println(p);
+            }
+
+            System.out.println("\n[NATIVE QUERY 2] Buscar profesores del departamento 'Sistemas'...");
+            List<Profesor> profesNativeDepto = profesorService.buscarPorDepartamentoNative("Sistemas");
+            for (Profesor p : profesNativeDepto) {
+                System.out.println(p);
+            }
+
+            System.out.println("\n[NATIVE QUERY 3] Buscar profesores contratados DESPUES del 1 de enero de 2010...");
+            List<Profesor> profesNativeFecha = profesorService.buscarContratadosDespuesDeNative(LocalDate.of(2010, 1, 1));
+            for (Profesor p : profesNativeFecha) {
+                System.out.println(p);
+            }
 
 
 
-
+            Quarkus.waitForExit();
             return 0;        
         }
     }
