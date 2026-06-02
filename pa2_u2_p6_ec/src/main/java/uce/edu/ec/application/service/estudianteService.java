@@ -1,60 +1,82 @@
 package uce.edu.ec.application.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import uce.edu.ec.domain.model.Estudiante;
 import uce.edu.ec.domain.respository.estudianteRepository;
 
-@ApplicationScoped
-@Transactional
-public class estudianteService {
 
-    @Inject
-    private EntityManager em;
+//@Transactional
+//Aqui programamos toda la logica de negocio 
+@ApplicationScoped
+public class estudianteService {
 
     @Inject
     private estudianteRepository estudianteRepository;
 
-    public void guardar(Estudiante estudiante) {
-        this.em.persist(estudiante);    
+    public void guardar(Estudiante estudiante){
+        this.estudianteRepository.crear(estudiante);
+
     }
 
-    public Estudiante buscarXId(Integer id) {
-        return em.find(Estudiante.class, id);
+    public void eliminar(Integer id){
+        this.estudianteRepository.eliminar(id);;
+
     }
 
-    public void actualizar(Estudiante estudiante) {
-        em.merge(estudiante);
+    public Estudiante buscarPorId(Integer id){
+        return this.estudianteRepository.seleccionarPorId(id);
+
+    }
+    
+    public void actualizar(Estudiante estudiante){
+        this.estudianteRepository.actualizar(estudiante);
+
+    }
+    public List<Estudiante> buscarTodos(){
+        return this.estudianteRepository.seleccionarTodos();
     }
 
-    public void eliminar(Integer id) {
-        Estudiante estudianteAEliminar = em.find(Estudiante.class, id);
-        
-        if (estudianteAEliminar != null) {
-            em.remove(estudianteAEliminar);
-        }
+    public List<Estudiante> buscarPorNombre(String nombre){
+        return this.estudianteRepository.seleccionarPorNombre(nombre);
     }
 
-    public List<Estudiante> seleccionarTodos() {
-        return estudianteRepository.seleccionarTodos();
+    public Estudiante buscarPorCedula(String cedula){
+        return this.estudianteRepository.seleccionarPorCedula(cedula);
     }
 
-
-    public Estudiante selectByNombre(String nombre) {
-        return estudianteRepository.selectByNombre(nombre);
+    public List<Estudiante> buscarPorGenero(String genero){
+        return this.estudianteRepository.seleccionarPorGenero(genero);
     }
 
-    public List<Estudiante> seleccionarXNombre(String nombre) {
-        return estudianteRepository.seleccionarXNombre(nombre);
-    }
+     public List<Estudiante> buscarPorGeneroTyped(String genero){
+        return this.estudianteRepository.seleccionarPorGeneroTyped(genero);
+     }
+     public List<Estudiante>buscarPorRangoFecha(LocalDate fechaInicio, LocalDate fechaFin){
+        return this.estudianteRepository.seleccionarPorRangoFecha(fechaInicio, fechaFin);
+     }
 
-    public Estudiante seleccionarXCedula(String cedula) {
-        return estudianteRepository.seleccionarXCedula(cedula);
-    }
+     public Long contar(){
+        return this.estudianteRepository.contar();
+     }
 
+     public List<Estudiante> buscarTodosNative(){
+        return this.estudianteRepository.seleccionarTodosNative();
+     }
+
+     public List<Estudiante> buscarTodosCriteria(){
+        return this.estudianteRepository.seleccionarTodosCriteria();
+     }
+
+     public List<Estudiante> buscarPorNombreCriteria(String Nombre){
+        return this.estudianteRepository.seleccionarPorNombreCriteria(Nombre);
+     }
+
+     public List<Estudiante> buscarDinamicoCriteria(String nombre, String apellido) {
+        return this.estudianteRepository.seleccionarDinamicoCriteria(nombre, apellido);
+    }
 
 }

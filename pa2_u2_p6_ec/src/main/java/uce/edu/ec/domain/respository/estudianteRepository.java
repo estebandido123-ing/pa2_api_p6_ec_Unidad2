@@ -1,25 +1,35 @@
 package uce.edu.ec.domain.respository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import uce.edu.ec.domain.model.Estudiante;
 
 public interface estudianteRepository {
-
-    public void crear(Estudiante estudiante);  
-    public Estudiante seleccionar (Integer id);
-    public void actualizar(Estudiante estudiante);  
-    public void eliminar(Integer id);  
-    public Estudiante selectByNombre(String Nombre);
-
+    //implemento los metodos que voy a necesitar para realizar EL CRUD
+    public void crear(Estudiante estudiante);
+    public Estudiante seleccionarPorId(Integer id);
+    public void actualizar(Estudiante estudiante);
+    public void eliminar(Integer id);
     public List<Estudiante> seleccionarTodos();
+    public List<Estudiante> seleccionarPorNombre(String nombre);
+    public Estudiante seleccionarPorCedula(String cedula);
+    //1.2 NamedQuery
+    public List<Estudiante> seleccionarPorGenero(String genero);
+    public List<Estudiante> seleccionarPorGeneroTyped(String genero);
+    public List<Estudiante> seleccionarPorRangoFecha(LocalDate fechaInicio, LocalDate fechaFin);
+    public Long contar();
 
-    List <Estudiante> seleccionarXNombre(String nombre);
+    //Native QUERY
+    public List<Estudiante> seleccionarTodosNative();
 
-    public Estudiante seleccionarXCedula(String cedula);
-    
+    public List<Estudiante> seleccionarTodosCriteria();
 
 
+    public List<Estudiante> seleccionarPorNombreCriteria(String nombre);
+
+
+    public List<Estudiante> seleccionarDinamicoCriteria(String nombre, String apellido);
 
     
 }
