@@ -57,4 +57,20 @@ public class ProfesorService {
      public Long contar(){
         return this.profesorRepository.contar();
      }
+
+     public List<Profesor> buscarTodosNative(){
+        return this.profesorRepository.seleccionarTodosNative();
+     }
+
+     public List<Profesor> buscarTodosCriteria(){
+        return this.profesorRepository.seleccionarTodosCriteria();
+     }
+
+     public List<Profesor> buscarPorNombreCriteria(String nombre){
+        return this.profesorRepository.seleccionarPorNombreCriteria(nombre);
+     }
+
+     public List<Profesor> buscarDinamicoCriteria(String nombre, String apellido) {
+        return this.profesorRepository.seleccionarDinamicoCriteria(nombre, apellido);
+    }
 }

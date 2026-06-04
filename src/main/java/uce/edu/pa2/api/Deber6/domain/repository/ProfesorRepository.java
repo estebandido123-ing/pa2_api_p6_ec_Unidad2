@@ -15,9 +15,19 @@ public interface ProfesorRepository {
     public List<Profesor> seleccionarPorNombre(String nombre);
     public Profesor seleccionarPorCedula(String cedula);
     
-    // NamedQuery
+    // 1.2 NamedQuery
     public List<Profesor> seleccionarPorDepartamento(String departamento);
     public List<Profesor> seleccionarPorDepartamentoTyped(String departamento);
     public List<Profesor> seleccionarPorRangoFecha(LocalDate fechaInicio, LocalDate fechaFin);
     public Long contar();
+
+    // Native QUERY
+    public List<Profesor> seleccionarTodosNative();
+
+    // Criteria API
+    public List<Profesor> seleccionarTodosCriteria();
+    public List<Profesor> seleccionarPorNombreCriteria(String nombre);
+    public List<Profesor> seleccionarDinamicoCriteria(String nombre, String apellido);
+
+    
 }
