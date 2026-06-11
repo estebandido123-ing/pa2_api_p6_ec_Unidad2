@@ -10,9 +10,8 @@ INSERT INTO estudiante(
     estu_nombre,
     estu_apellido,
     estu_genero,
-    estu_fechaNacimiento
-)
-VALUES(
+    estu_fecha_nacimiento
+) VALUES (
     nextval('seq_estudiante'),
     '1712345678',
     'Esteban',

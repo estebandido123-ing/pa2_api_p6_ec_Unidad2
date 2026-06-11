@@ -1,13 +1,16 @@
 package uce.edu.ec;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import jakarta.inject.Inject;
+import uce.edu.ec.application.service.CiudadanoService;
 import uce.edu.ec.application.service.estudianteService;
+import uce.edu.ec.domain.model.Ciudadano;
+import uce.edu.ec.domain.model.Empleado;
 import uce.edu.ec.domain.model.Estudiante;
 
 @QuarkusMain
@@ -22,6 +25,11 @@ public class Main {
 
         @Inject
         private estudianteService estudianteService;
+
+        @Inject
+        private CiudadanoService ciudadanoService;
+
+
 
         @Override
         public int run(String... args) throws Exception {
@@ -64,7 +72,7 @@ public class Main {
             for (Estudiante e : estudiantesporNombre) {
                 System.out.println(e);
             }
-*/
+
             //seleccionar por cedula
             System.out.println("Seleccionar por cedula...");
             Estudiante estudianteporCedula = estudianteService.buscarPorCedula("1712345678");
@@ -140,7 +148,40 @@ public class Main {
 
             System.out.println("\n3. Buscando solo por null:");
             List<Estudiante> busqueda4 = estudianteService.buscarDinamicoCriteria(null, null);
-            busqueda3.forEach(System.out::println);
+            busqueda3.forEach(System.out::println);*/
+
+            System.out.println("\n==========================================");
+            System.out.println(" INICIANDO PRUEBAS - RELACIÓN @OneToOne");
+            System.out.println("==========================================\n");
+
+            // PASO 1: Crear y guardar el Ciudadano (Entidad Fuerte)
+            System.out.println("1. Creando y guardando al Ciudadano...");
+            Ciudadano ciudadanoNuevo = new Ciudadano();
+            ciudadanoNuevo.setNombre("Luis Mideros");
+            ciudadanoNuevo.setFechaNacimiento(LocalDate.of(1990, 5, 15));
+            
+            ciudadanoService.guardar(ciudadanoNuevo);
+            System.out.println("✅ Ciudadano guardado exitosamente.");
+
+
+            // PASO 2: Crear el Empleado
+            System.out.println("\n2. Creando al Empleado...");
+            Empleado empleadoNuevo = new Empleado();
+            empleadoNuevo.setSalario(1250.50);
+            empleadoNuevo.setFechaIngreso(LocalDateTime.now());
+            
+            // PASO 3: Establecer la relación (Vincular ciudadano con empleado)
+            System.out.println("3. Vinculando el Ciudadano al Empleado...");
+            empleadoNuevo.setCiudadano(ciudadanoNuevo);
+
+            
+
+
+            
+
+
+
+
 
              Quarkus.waitForExit();
             return 0;        
