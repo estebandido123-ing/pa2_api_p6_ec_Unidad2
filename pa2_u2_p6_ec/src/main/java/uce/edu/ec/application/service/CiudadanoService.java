@@ -11,6 +11,8 @@ public class CiudadanoService {
     @Inject
     private CiudadanoRepository ciudadanoRepository;
 
+    
+
     public void guardar(Ciudadano ciudadano) {
         this.ciudadanoRepository.crear(ciudadano);
     }

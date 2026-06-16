@@ -8,6 +8,7 @@ import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
 import jakarta.inject.Inject;
 import uce.edu.ec.application.service.CiudadanoService;
+import uce.edu.ec.application.service.EmpleadoService;
 import uce.edu.ec.application.service.estudianteService;
 import uce.edu.ec.domain.model.Ciudadano;
 import uce.edu.ec.domain.model.Empleado;
@@ -28,6 +29,9 @@ public class Main {
 
         @Inject
         private CiudadanoService ciudadanoService;
+
+        @Inject
+        private EmpleadoService empleadoService;
 
 
 
@@ -150,33 +154,52 @@ public class Main {
             List<Estudiante> busqueda4 = estudianteService.buscarDinamicoCriteria(null, null);
             busqueda3.forEach(System.out::println);*/
 
+            System.out.println("Conexion a la base de datos POSTGRES!");
+
             System.out.println("\n==========================================");
-            System.out.println(" INICIANDO PRUEBAS - RELACIÓN @OneToOne");
+            System.out.println(" INICIANDO PRUEBAS - RELACIÓN BIDIRECCIONAL");
             System.out.println("==========================================\n");
 
-            // PASO 1: Crear y guardar el Ciudadano (Entidad Fuerte)
-            System.out.println("1. Creando y guardando al Ciudadano...");
+            // 1. Instanciar los datos del Ciudadano 
             Ciudadano ciudadanoNuevo = new Ciudadano();
             ciudadanoNuevo.setNombre("Luis Mideros");
             ciudadanoNuevo.setFechaNacimiento(LocalDate.of(1990, 5, 15));
-            
-            ciudadanoService.guardar(ciudadanoNuevo);
-            System.out.println("✅ Ciudadano guardado exitosamente.");
 
-
-            // PASO 2: Crear el Empleado
-            System.out.println("\n2. Creando al Empleado...");
+            // 2. Instanciar los datos del Empleado 
             Empleado empleadoNuevo = new Empleado();
-            empleadoNuevo.setSalario(1250.50);
+            empleadoNuevo.setSalario(150.0);
             empleadoNuevo.setFechaIngreso(LocalDateTime.now());
+
+            // 3. SETEO EN UN SOLO PASO 
+            System.out.println("-> Vinculando el Ciudadano y el Empleado mutuamente...");
+            empleadoNuevo.setCiudadano(ciudadanoNuevo); 
+            ciudadanoNuevo.setEmpleado(empleadoNuevo);  
+
+            // 4. Guardar usando los servicios 
+            System.out.println("-> Guardando en la base de datos...");
             
-            // PASO 3: Establecer la relación (Vincular ciudadano con empleado)
-            System.out.println("3. Vinculando el Ciudadano al Empleado...");
-            empleadoNuevo.setCiudadano(ciudadanoNuevo);
+            // PRIMERO: Entidad fuerte
+            ciudadanoService.guardar(ciudadanoNuevo);
+            System.out.println(" Ciudadano guardado con ID: " + ciudadanoNuevo.getId());
+
+            // SEGUNDO: Entidad débil 
+            empleadoService.guardar(empleadoNuevo);
+            System.out.println(" Empleado guardado con ID: " + empleadoNuevo.getId());
+
+            System.out.println("\n==========================================");
+            System.out.println(" PRUEBA FINALIZADA CON ÉXITO");
+            System.out.println("==========================================\n");
+
+            // DELETE: Eliminar (Opcional, coméntalo si quieres que se quede guardado en tu BD para verlo)
+            // System.out.println("\n8. Eliminando al Empleado...");
+            // empleadoService.eliminar(empleadoEncontrado.getId());
+            // System.out.println(" Empleado eliminado.");
+            
 
             
 
-
+            //Una transaccion es un conjunto de instrucciones, que se ejecuta 
+            // de manera completa, o no se ejecuta ninguna de las transacciones
             
 
 
