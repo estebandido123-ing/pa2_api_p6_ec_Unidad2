@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -18,23 +19,27 @@ public class Usuario {
     @Column(name = "usu_id")
     private Integer id;
 
-    @Column(name = "usu_username", unique = true, nullable = false)
-    private String username;
+    @Column(name = "usu_nombre")
+    private String nombre;
 
-    @Column(name = "usu_email", unique = true, nullable = false)
+    @Column(name = "usu_email")
     private String email;
 
-    public Usuario() {}
+    @OneToOne(mappedBy = "usuario")
+    private Carrito carrito;
 
+    public Usuario() {}
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    public Carrito getCarrito() { return carrito; }
+    public void setCarrito(Carrito carrito) { this.carrito = carrito; }
 
     @Override
     public String toString() {
-        return "Usuario [id=" + id + ", username=" + username + ", email=" + email + "]";
+        return "Usuario [id=" + id + ", nombre=" + nombre + ", email=" + email + "]";
     }
 }

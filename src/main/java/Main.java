@@ -29,30 +29,46 @@ public class Main {
         @Override
         public int run(String... args) throws Exception {
 
+            System.out.println("Conexion a la base de datos POSTGRES!");
+
             System.out.println("\n==========================================");
-            System.out.println(" INICIANDO PRUEBAS");
+            System.out.println(" PRUEBA DE E-COMMERCE Y CASCADE MERGE");
             System.out.println("==========================================\n");
 
-            System.out.println("1. Registrando nuevo Usuario...");
-            Usuario nuevoUsuario = new Usuario();
-            nuevoUsuario.setUsername("dev_master");
-            nuevoUsuario.setEmail("dev@correo.com");
-            
-            usuarioService.guardar(nuevoUsuario);
-            System.out.println("✅ Usuario guardado exitosamente: " + nuevoUsuario);
+            Usuario miUsuario = new Usuario();
+            miUsuario.setNombre("Carlos Andres");
+            miUsuario.setEmail("carlos@gmail.com");
 
-            System.out.println("\n2. Creando Carrito de compras...");
-            Carrito nuevoCarrito = new Carrito();
-            nuevoCarrito.setTotalPagar(150.75);
-            nuevoCarrito.setFechaCreacion(LocalDateTime.now());
-            
-            
-            System.out.println("3. Asignando el carrito al usuario...");
-            nuevoCarrito.setUsuario(nuevoUsuario);
+            System.out.println("-> Guardando Usuario inicial...");
+            usuarioService.guardar(miUsuario);
 
-            System.out.println("4. Guardando el Carrito en la base de datos...");
-            carritoService.guardar(nuevoCarrito);
-            System.out.println("✅ Carrito guardado exitosamente: " + nuevoCarrito);
+            Carrito miCarrito = new Carrito();
+            miCarrito.setTotal(350.75);
+            miCarrito.setFechaCreacion(LocalDateTime.now());
+
+            System.out.println("-> Vinculando Usuario y Carrito...");
+            miCarrito.setUsuario(miUsuario); 
+            miUsuario.setCarrito(miCarrito);  
+
+            System.out.println("-> Guardando el carrito en la base de datos...");
+            carritoService.guardar(miCarrito);
+            
+            System.out.println("✅ Guardados con éxito.");
+
+            System.out.println("\n-> Probando CascadeType.MERGE...");
+            
+            miCarrito.setTotal(500.00); 
+            miCarrito.getUsuario().setEmail("nuevo_correo@gmail.com"); 
+
+            carritoService.actualizar(miCarrito);
+
+            System.out.println("✅ Actualización en Cascada (MERGE) completada.");
+            
+          
+            Usuario usuarioActualizado = usuarioService.buscarPorId(miUsuario.getId());
+            System.out.println("El nuevo correo guardado en el usuario es: " + usuarioActualizado.getEmail());
+
+            System.out.println("\n==========================================");
 
 
             Quarkus.waitForExit();

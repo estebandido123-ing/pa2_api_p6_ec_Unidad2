@@ -1,6 +1,7 @@
 package Domain.model;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,23 +22,23 @@ public class Carrito {
     @Column(name = "car_id")
     private Integer id;
 
-    @Column(name = "car_total_pagar")
-    private double totalPagar;
+    @Column(name = "car_total")
+    private Double total;
 
     @Column(name = "car_fecha_creacion")
     private LocalDateTime fechaCreacion;
 
-    // Aquí está la magia de la relación 1 a 1
-    @OneToOne
-    @JoinColumn(name = "usu_id", unique = true) 
+    
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "usu_id")
     private Usuario usuario;
 
     public Carrito() {}
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-    public double getTotalPagar() { return totalPagar; }
-    public void setTotalPagar(double totalPagar) { this.totalPagar = totalPagar; }
+    public Double getTotal() { return total; }
+    public void setTotal(Double total) { this.total = total; }
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
     public Usuario getUsuario() { return usuario; }
@@ -45,6 +46,6 @@ public class Carrito {
 
     @Override
     public String toString() {
-        return "Carrito [id=" + id + ", totalPagar=$" + totalPagar + ", usuario=" + (usuario != null ? usuario.getUsername() : "null") + "]";
+        return "Carrito [id=" + id + ", total=$" + total + ", usuario=" + (usuario != null ? usuario.getNombre() : "null") + "]";
     }
 }
