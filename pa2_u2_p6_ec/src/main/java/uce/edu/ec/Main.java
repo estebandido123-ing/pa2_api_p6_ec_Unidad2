@@ -9,10 +9,12 @@ import io.quarkus.runtime.annotations.QuarkusMain;
 import jakarta.inject.Inject;
 import uce.edu.ec.application.service.CiudadanoService;
 import uce.edu.ec.application.service.EmpleadoService;
-import uce.edu.ec.application.service.estudianteService;
+import uce.edu.ec.application.service.PedidoService;
 import uce.edu.ec.domain.model.Ciudadano;
+import uce.edu.ec.domain.model.Cliente;
 import uce.edu.ec.domain.model.Empleado;
-import uce.edu.ec.domain.model.Estudiante;
+import uce.edu.ec.domain.model.Pedido;
+
 
 @QuarkusMain
 public class Main {
@@ -25,13 +27,13 @@ public class Main {
         
 
         @Inject
-        private estudianteService estudianteService;
-
-        @Inject
         private CiudadanoService ciudadanoService;
 
         @Inject
         private EmpleadoService empleadoService;
+
+        @Inject
+        private PedidoService pedidoService;
 
 
 
@@ -39,150 +41,29 @@ public class Main {
         public int run(String... args) throws Exception {
 
              System.out.println("Conexion a la base de datos POSTGRES!");
-            
-            //Creacion de un nuevo Estudiante
-            Estudiante estudiante = new Estudiante();
-            estudiante.setNombre("Esteban");
-            estudiante.setApellido("Chachalo");
-            estudiante.setFechaNacimiento(LocalDate.of(2003, 1, 19));
-            estudiante.setGenero("M");
-       /*      
-            //Guardar un nuevo estudiante
-            System.out.println("Guardando un nuevo Estudiante...");
-            estudianteService.guardar(estudiante);
-
-            //Eliminar un estudiante por ID
-            System.out.println("Eliminamos al Estudiante por ID");
-            estudianteService.eliminar(1);
-            
-            //Metodo Actualizar
-            System.out.println("Actualizar los Datos por ID...");
-            Estudiante estudiante2 = this.estudianteService.buscarPorId(3);
-            estudiante2.setNombre("Paul");
-            estudiante2.setApellido("Gomez");
-            this.estudianteService.actualizar(estudiante2);
-
-            //Buscar al Estudiante por ID
-            System.out.println("Buscando Estudiante por ID...");
-            System.out.println(estudianteService.buscarPorId(2).toString());
-
-            //Seleccionar todos los estudiantes
-            System.out.println("Seleccionar todos los estudiantes...");
-            estudianteService.buscarTodos().forEach(e -> System.out.println(e.toString()));
-
-            //Seleccionar por nombre
-            System.out.println("Seleccionar por nombre...");
-            List<Estudiante> estudiantesporNombre = estudianteService.buscarPorNombre("Alex");
-            for (Estudiante e : estudiantesporNombre) {
-                System.out.println(e);
-            }
-
-            //seleccionar por cedula
-            System.out.println("Seleccionar por cedula...");
-            Estudiante estudianteporCedula = estudianteService.buscarPorCedula("1712345678");
-            System.out.println(estudianteporCedula);
-            //1.2 NamedQuery--------------------------------------------------------------------------------------------------------------
-            //Seleccionar por genero
-            System.out.println("Seleccionar por genero...");
-            List<Estudiante> estudiantesporGenero = estudianteService.buscarPorGenero("M");
-            for (Estudiante e : estudiantesporGenero) {
-                System.out.println(e);
-            }
-
-            //Seleccionar por genero usando NamedQuery
-            System.out.println("Seleccionar por genero usando NamedQuery...");  
-            List<Estudiante> estudiantesporGeneroTyped = estudianteService.buscarPorGeneroTyped("M");
-            for (Estudiante e : estudiantesporGeneroTyped) {
-                System.out.println(e);
-            }
-            //Seleccionar por rango de fecha usando NamedQuery
-            System.out.println("Seleccionar por rango de fecha usando NamedQuery...");  
-            List<Estudiante> estudiantesporRangoFecha = estudianteService.buscarPorRangoFecha(LocalDate.of(2004, 1, 1), LocalDate.of(2007, 12, 31));
-            for (Estudiante e : estudiantesporRangoFecha) {
-                System.out.println(e);
-            }
-            //Contar el numero de estudiantes usando NamedQuery
-            System.out.println("Contar el numero de estudiantes usando NamedQuery...");
-            Long totalEstudiantes = estudianteService.contar();
-            System.out.println("Total de estudiantes: " + totalEstudiantes);
-            
-            
-            //Seleccionar todos los estudiantes usando Native Query
-            System.out.println("Seleccionar todos los estudiantes usando Native Query...");
-            List<Estudiante> estudiantesTodosNative = estudianteService.buscarTodosNative();
-            for (Estudiante e : estudiantesTodosNative) {
-                System.out.println(e);
-            }
-
-            //Seleccionar todos los estudiantes usando Native Query Criteria
-            System.out.println("Seleccionar todos los estudiantes usando Native Query...");
-            List<Estudiante> estudiantesTodosCriteria = estudianteService.buscarTodosCriteria();
-            for (Estudiante e : estudiantesTodosCriteria) {
-                System.out.println(e);
-            }
 
 
-            System.out.println("Seleccionar todos los estudiantes usando Native Query...");
-            List<Estudiante> estudiantesPorNombreCriteria = estudianteService.buscarPorNombreCriteria("Esteban");
-            for (Estudiante e : estudiantesPorNombreCriteria) {
-                System.out.println(e);
-            }
-
-            //necesito que un nombre query se consulte por nombre y apellido, 
-            // a menos que uno sea null, que sea un metodo dinamico, que se 
-            // contruya el 
-
-
-            System.out.println("\n--- PRUEBAS CRITERIA API DINÁMICO ---");
-
-            // Prueba 1: Buscando usando AMBOS campos
-            System.out.println("1. Buscando por Nombre 'Esteban' y Apellido 'Chachalo':");
-            List<Estudiante> busqueda1 = estudianteService.buscarDinamicoCriteria("Esteban", "Chachalo");
-            busqueda1.forEach(System.out::println);
-
-            // Prueba 2: Buscando SOLO por Nombre (Apellido va nulo)
-            System.out.println("\n2. Buscando solo por Nombre 'Alex' (Apellido null):");
-            List<Estudiante> busqueda2 = estudianteService.buscarDinamicoCriteria("Alex", null);
-            busqueda2.forEach(System.out::println);
-
-            // Prueba 3: Buscando SOLO por Apellido (Nombre va nulo)
-            System.out.println("\n3. Buscando solo por Apellido 'Gomez' (Nombre null):");
-            List<Estudiante> busqueda3 = estudianteService.buscarDinamicoCriteria(null, "Gomez");
-            busqueda3.forEach(System.out::println);
-
-            System.out.println("\n3. Buscando solo por null:");
-            List<Estudiante> busqueda4 = estudianteService.buscarDinamicoCriteria(null, null);
-            busqueda3.forEach(System.out::println);*/
-
-            System.out.println("Conexion a la base de datos POSTGRES!");
-
-            System.out.println("\n==========================================");
             System.out.println(" INICIANDO PRUEBAS - RELACIÓN BIDIRECCIONAL");
-            System.out.println("==========================================\n");
+            
 
-            // 1. Instanciar los datos del Ciudadano 
             Ciudadano ciudadanoNuevo = new Ciudadano();
             ciudadanoNuevo.setNombre("Luis Mideros");
             ciudadanoNuevo.setFechaNacimiento(LocalDate.of(1990, 5, 15));
 
-            // 2. Instanciar los datos del Empleado 
             Empleado empleadoNuevo = new Empleado();
             empleadoNuevo.setSalario(150.0);
             empleadoNuevo.setFechaIngreso(LocalDateTime.now());
 
-            // 3. SETEO EN UN SOLO PASO 
             System.out.println("-> Vinculando el Ciudadano y el Empleado mutuamente...");
             empleadoNuevo.setCiudadano(ciudadanoNuevo); 
             ciudadanoNuevo.setEmpleado(empleadoNuevo);  
 
-            // 4. Guardar usando los servicios 
             System.out.println("-> Guardando en la base de datos...");
             
-            // PRIMERO: Entidad fuerte
             ciudadanoService.guardar(ciudadanoNuevo);
             System.out.println(" Ciudadano guardado con ID: " + ciudadanoNuevo.getId());
 
-            // SEGUNDO: Entidad débil 
+            
             empleadoService.guardar(empleadoNuevo);
             System.out.println(" Empleado guardado con ID: " + empleadoNuevo.getId());
 
@@ -202,9 +83,36 @@ public class Main {
             // de manera completa, o no se ejecuta ninguna de las transacciones
             
 
+            System.out.println("\n==========================================");
+            System.out.println(" PRUEBAS DE RELACIÓN @OneToMany (1 a N)");
+            System.out.println("==========================================\n");
 
+            System.out.println("1. Creando al Cliente...");
+            Cliente nuevoCliente = new Cliente();
+            nuevoCliente.setCedula("1750000001");
+            nuevoCliente.setNombre("Esteban Chachalo");
 
+            Pedido pedido1 = new Pedido();
+            pedido1.setTotal(Double.valueOf(10));
+            pedido1.setCliente(nuevoCliente);
+            pedido1.setFecha(LocalDate.of(2003, 01, 19));
+            
+            Pedido pedido2 = new Pedido();
+            pedido2.setTotal(Double.valueOf(10));
+            pedido2.setCliente(nuevoCliente);
+            pedido2.setFecha(LocalDate.of(2003, 01, 19));
+            
+            
+            System.out.println("-> Asignando los pedidos al cliente...");
+            pedido1.setCliente(nuevoCliente);
+            pedido2.setCliente(nuevoCliente);
 
+            System.out.println("-> Guardando Pedidos en la base de datos...");
+            pedidoService.guardar(pedido1);
+            pedidoService.guardar(pedido2);
+
+            System.out.println(" PRUEBA @OneToMany FINALIZADA");
+            
 
              Quarkus.waitForExit();
             return 0;        
