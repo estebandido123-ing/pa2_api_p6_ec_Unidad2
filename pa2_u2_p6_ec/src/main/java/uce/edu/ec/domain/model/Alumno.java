@@ -2,6 +2,7 @@ package uce.edu.ec.domain.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,11 +29,16 @@ public class Alumno {
     @Column(name = "alum_nombre")
     private String Nombre;
 
-    @ManyToMany
+    @ManyToMany (cascade = CascadeType.ALL)
     @JoinTable(name= "alumno_materia", joinColumns= @JoinColumn (name = "alma_id_alumno"), inverseJoinColumns= @JoinColumn(name= "alma_id_materia"))
     private List<Materia> materias;
 
-    
+    public List<Materia> getMaterias() {
+         return materias; 
+        }
+    public void setMaterias(List<Materia> materias) {
+         this.materias = materias; 
+        }
     
     public Alumno() {
     }

@@ -32,4 +32,9 @@ public class MateriaService {
     public List<Materia> buscarTodos() {
         return this.materiaRepository.seleccionarTodos();
     }
+
+    public Materia buscarPorIdConAlumnos(Integer id) {
+        return this.materiaRepository.seleccionarPorIdConAlumnos(id);
+    }
+
 }

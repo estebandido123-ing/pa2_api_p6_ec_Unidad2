@@ -45,4 +45,17 @@ public class AlumnoRepositoryImpl implements AlumnoRepository {
         TypedQuery<Alumno> query = this.em.createQuery("SELECT a FROM Alumno a", Alumno.class);
         return query.getResultList();
     }
+
+    @Override
+    public Alumno seleccionarPorIdConMaterias(Integer id) {
+        jakarta.persistence.TypedQuery<Alumno> query = this.em.createQuery(
+            "SELECT a FROM Alumno a LEFT JOIN FETCH a.materias WHERE a.Id = :idAlumno", Alumno.class);
+        query.setParameter("idAlumno", id);
+        
+        try {
+            return query.getSingleResult();
+        } catch (jakarta.persistence.NoResultException e) {
+            return null; 
+    }
+}
 }

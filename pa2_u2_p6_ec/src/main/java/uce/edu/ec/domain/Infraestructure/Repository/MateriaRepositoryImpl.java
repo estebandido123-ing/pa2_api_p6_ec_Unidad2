@@ -45,4 +45,18 @@ public class MateriaRepositoryImpl implements MateriaRepository {
         TypedQuery<Materia> query = this.em.createQuery("SELECT m FROM Materia m", Materia.class);
         return query.getResultList();
     }
+    
+    @Override
+    public Materia seleccionarPorIdConAlumnos(Integer id) {
+        jakarta.persistence.TypedQuery<Materia> query = this.em.createQuery(
+            "SELECT m FROM Materia m LEFT JOIN FETCH m.alumnos WHERE m.Id = :idMateria", Materia.class);
+        query.setParameter("idMateria", id);
+        
+        try {
+            return query.getSingleResult();
+        } catch (jakarta.persistence.NoResultException e) {
+            return null; // Retorna null si no encuentra la materia con ese ID
+        }
+    }
+
 }

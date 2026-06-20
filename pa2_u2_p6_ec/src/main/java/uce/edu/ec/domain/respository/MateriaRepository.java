@@ -1,6 +1,7 @@
 package uce.edu.ec.domain.respository;
 
 import java.util.List;
+
 import uce.edu.ec.domain.model.Materia;
 
 public interface MateriaRepository {
@@ -14,4 +15,6 @@ public interface MateriaRepository {
     void eliminar(Integer id);
     
     List<Materia> seleccionarTodos();
+
+    Materia seleccionarPorIdConAlumnos(Integer id);
 }

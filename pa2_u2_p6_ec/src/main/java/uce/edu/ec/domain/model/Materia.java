@@ -1,10 +1,13 @@
 package uce.edu.ec.domain.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -24,8 +27,17 @@ public class Materia {
 
     @Column(name = "mate_numero_creditos")
     private Integer numeroCreditos;
+    
 
+    @ManyToMany(mappedBy= "materias")
+    private List<Alumno> alumnos;
 
+    public List<Alumno> getAlumnos() {
+         return alumnos; 
+        }
+    public void setAlumnos(List<Alumno> alumnos) {
+         this.alumnos = alumnos; 
+    }
 
     public Materia() {
     }
