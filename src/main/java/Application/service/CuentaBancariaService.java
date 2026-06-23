@@ -50,4 +50,16 @@ public class CuentaBancariaService {
             System.out.println("-> Error: No se encontró la cuenta destino con ID: " + idCuentaDestino);
         }
     }
+
+    public void debitarMonto(Integer idCuentaOrigen, Double monto) {
+        CuentaBancaria cuentaOrigen = this.cuentaBancariaRepository.seleccionarPorId(idCuentaOrigen);
+        if (cuentaOrigen != null) {
+            Double nuevoSaldo = cuentaOrigen.getSaldo() - monto;
+            cuentaOrigen.setSaldo(nuevoSaldo);
+            this.cuentaBancariaRepository.actualizar(cuentaOrigen);
+            System.out.println("-> [Banco] Cuenta ID " + idCuentaOrigen + " debitada con éxito. Nuevo Saldo: $" + nuevoSaldo);
+        } else {
+            System.out.println("-> [Error] No se encontró la cuenta origen con ID: " + idCuentaOrigen);
+        }
+    }
 }

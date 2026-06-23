@@ -77,6 +77,13 @@ public class Main {
             cuentaBancariaService.acreditarMonto(cuentaDestino.getId(), trans1.getMonto());
             cuentaBancariaService.acreditarMonto(cuentaDestino.getId(), trans2.getMonto());
 
+
+            cuentaBancariaService.debitarMonto(cuentaNueva.getId(), trans1.getMonto());
+            cuentaBancariaService.debitarMonto(cuentaNueva.getId(), trans2.getMonto());
+
+            cuentaBancariaService.acreditarMonto(cuentaDestino.getId(), trans1.getMonto());
+            cuentaBancariaService.acreditarMonto(cuentaDestino.getId(), trans2.getMonto());
+
             // 5. Mostrar reporte básico para verificar en consola
             System.out.println("\n==========================================");
             System.out.println(" REPORTE DE OPERACIONES");
