@@ -31,7 +31,6 @@ public class CuentaBancaria {
     private Double saldo;
 
     // Relación: Una cuenta tiene muchas transferencias
-    // IMPORTANTE: "cuentaBancaria" es el nombre exacto de la variable en la otra clase
     @OneToMany(mappedBy = "cuentaBancaria")
     private List<Transferencia> transferencias;
 

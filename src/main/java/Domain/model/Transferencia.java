@@ -29,7 +29,7 @@ public class Transferencia {
     // Relación: Muchas transferencias pertenecen a una cuenta
     @ManyToOne 
     @JoinColumn(name = "cue_id") 
-    private CuentaBancaria cuentaBancaria; // Esta es la variable que busca el mappedBy
+    private CuentaBancaria cuentaBancaria; 
 
     // Relación 1: Cuenta que envía el dinero
     @ManyToOne 
